@@ -8,35 +8,40 @@ document.querySelector('#app').innerHTML = `
       <h1 class="text-xl font-bold px-4 hidden sm:block">CHAT BOT AI</h1>
         <i class="bi bi-robot sm:hidden ml-5"></i>
       <div class="flex-1 flex justify-center">
-       <select id="model-select" class="select select-bordered w-60 sm:w-full max-w-xs">
-          <option value="gemma2-9b-it">gemma2-9b-it</option>
-          <option value="llama-3.1-8b-instant">llama-3.1-8b-instant</option>
-          <option value="llama-3.2-1b-preview">llama-3.2-1b-preview</option>
-          <option value="llama-3.2-3b-preview">llama-3.2-3b-preview</option>
-          <option value="llama-3.2-11b-vision-preview">llama-3.2-11b-vision-preview</option>
-          <option value="llama-3.2-90b-vision-preview">llama-3.2-90b-vision-preview</option>
-          <option value="llama-guard-3-8b">llama-guard-3-8b</option>
-          <option value="llama3-70b-8192">llama3-70b-8192</option>
-          <option value="llama3-8b-8192">llama3-8b-8192</option>
-          <option value="mixtral-8x7b-32768">mixtral-8x7b-32768</option>
+       <select id="model-select" class="uppercase select select-bordered w-40 sm:w-full max-w-xs">
+          <option value="">Loading models ...</option>
         </select>
       </div>
-      <div class="flex gap-4">
-        <a href="https://github.com/RevanSP" target="_blank" class="hover:text-base-300">
-          <i class="fab fa-github fa-lg"></i>
-        </a>
-        <a href="https://www.instagram.com/m9nokuro" target="_blank" class="hover:text-base-300">
-          <i class="fab fa-instagram fa-lg"></i>
-        </a>
-        <a href="https://www.facebook.com/profile.php?id=100082958149027" target="_blank" class="hover:text-base-300 mr-4">
-          <i class="fab fa-facebook fa-lg"></i>
-        </a>
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost m-1">
+          <i class="fas fa-chevron-down fa-md"></i>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+          <li>
+            <a href="https://github.com/RevanSP" target="_blank" class="flex items-center gap-2">
+              <i class="fab fa-github"></i>
+              <span>@RevanSP</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.instagram.com/m9nokuro" target="_blank" class="flex items-center gap-2">
+              <i class="fab fa-instagram"></i>
+              <span>@m9nokuro</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.facebook.com/profile.php?id=100082958149027" target="_blank" class="flex items-center gap-2">
+              <i class="fab fa-facebook"></i>
+              <span>@Reiivan</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
   <div class="bg-base-200 rounded-box p-4 flex flex-col h-[calc(100vh-7rem)]">
 <div id="chat-messages" class="space-y-4 flex-grow mb-4 pr-0 md:pr-3 pb-6 overflow-y-scroll md:overflow-y-auto"></div>
- <button id="who-is-reiiv-btn" class="btn btn-circle bg-base-100 border border-base-300 w-full text-white mb-5 p-4 shadow-lg z-20">
+ <button id="who-is-reiiv-btn" class="btn w-full !rounded-xl bg-base-100 border border-base-300 text-white mb-5 p-4 shadow-lg z-20">
   REIIV ?
 </button>
   <form id="chat-form" class="flex gap-2">
@@ -223,14 +228,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const br = document.createElement('br');
     const avatarDiv = document.createElement('div');
-    avatarDiv.className = 'avatar mt-8 mb-5 flex justify-center';
+    avatarDiv.className = 'avatar mt-8 mb-5 flex justify-center items-center w-full';
 
     const avatarRingDiv = document.createElement('div');
-    avatarRingDiv.className = 'ring-primary ring-offset-base-100 w-32 rounded-full ring ring-offset-2';
+    avatarRingDiv.className = 'ring-primary ring-offset-base-100 w-32 rounded-full ring ring-offset-2 flex justify-center items-center';
 
     const imgElement = document.createElement('img');
     imgElement.src = 'Me.jpg';
     imgElement.alt = 'REIIV';
+    imgElement.className = 'w-full h-full object-cover rounded-full';
 
     avatarRingDiv.appendChild(imgElement);
     avatarDiv.appendChild(avatarRingDiv);
@@ -270,6 +276,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     disableInputField(false);
   });
+
+  fetchModels();
 });
 
 const modelSelect = document.getElementById('model-select');
@@ -375,7 +383,7 @@ const addMessage = (content, isUser = false, isFirstMessage = false, isThinking 
 
   if (isFirstMessage) {
     const greeting = getRandomGreeting();
-    messageTextElement.innerHTML = `${greeting} How can I help you today ? I am programmed by &nbsp;<div class="badge rounded bg-base-300 inline-flex items-center py-3"> <i class="bi bi-patch-check-fill w-3 text-blue-600"></i> &nbsp;&nbsp;<strong>REIIV</strong></div>&nbsp; Currently/default, using model : ${modelSelect.value}`;
+    messageTextElement.innerHTML = `${greeting} How can I help you today ? I am programmed by &nbsp;<div class="badge rounded bg-base-300 inline-flex items-center py-3"> <i class="bi bi-patch-check-fill w-3 text-blue-600"></i> &nbsp;&nbsp;<strong>REIIV</strong></div>`;
   } else {
     const typingDelay = 20;
     let currentCharIndex = 0;
@@ -399,3 +407,38 @@ const addMessage = (content, isUser = false, isFirstMessage = false, isThinking 
 
 addMessage(`How can I help you today ? I am programmed by &nbsp;<div class="badge rounded bg-base-300 inline-flex items-center py-3"> <i class="bi bi-patch-check-fill w-3 text-blue-600"></i>
  &nbsp;&nbsp;<strong>REIIV</strong></div>&nbsp; Currently/default, using model : ${modelSelect.value}`, false, true);
+
+const fetchModels = async () => {
+  try {
+    const response = await fetch('https://api.groq.com/openai/v1/models', {
+      headers: {
+        'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const modelSelect = document.getElementById('model-select');
+
+    modelSelect.innerHTML = '';
+
+    data.data.forEach(model => {
+      const option = document.createElement('option');
+      option.value = model.id;
+      option.textContent = model.id;
+      modelSelect.appendChild(option);
+    });
+
+    if (data.data.length > 0) {
+      modelSelect.value = data.data[0].id;
+    }
+  } catch (error) {
+    console.error('Error fetching models:', error);
+    const modelSelect = document.getElementById('model-select');
+    modelSelect.innerHTML = '<option value="">Error loading models</option>';
+  }
+};

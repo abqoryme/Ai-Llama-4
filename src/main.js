@@ -7,11 +7,6 @@ document.querySelector('#app').innerHTML = `
     <i class="bi bi-robot hidden sm:block ml-4"></i>
       <h1 class="text-xl font-bold px-4 hidden sm:block">ASSISTEN AI</h1>
         <i class="bi bi-robot sm:hidden ml-5"></i>
-      <div class="flex-1 flex justify-center">
-       <select id="model-select" class="uppercase select select-bordered w-40 sm:w-full max-w-xs">
-          <option value="">Loading models ...</option>
-        </select>
-      </div>
       <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost m-1">
           <i class="fas fa-chevron-down fa-md"></i>

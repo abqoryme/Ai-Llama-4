@@ -187,11 +187,18 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const greetings = [
-  { language: 'English', greeting: 'Hello !' },
-  { language: 'Indonesian', greeting: 'Halo !' },
-  { language: 'Sundanese', greeting: 'Halo, Kumaha Damang !' },
-  { language: 'Japanese', greeting: 'こんにちは！' },
-  { language: 'Jawa', greeting: 'Halo, pripun kabare?' }
+  { language: 'English', greeting: 'Hello! 🇬🇧' },
+  { language: 'Indonesian', greeting: 'Halo! 🇮🇩' },
+  { language: 'Sundanese', greeting: 'Halo, kumaha damang! 🦚' },
+  { language: 'Japanese', greeting: 'こんにちは！ 🇯🇵' },
+  { language: 'Javanese', greeting: 'Halo, pripun kabare? 🦃' },
+  { language: 'Korean', greeting: '안녕하세요! 🇰🇷' },
+  { language: 'Arabic', greeting: 'مرحبا! 🇸🇦' },
+  { language: 'French', greeting: 'Bonjour! 🇫🇷' },
+  { language: 'Spanish', greeting: '¡Hola! 🇪🇸' },
+  { language: 'German', greeting: 'Hallo! 🇩🇪' },
+  { language: 'Thai', greeting: 'สวัสดีครับ! 🇹🇭' },
+  { language: 'Hindi', greeting: 'नमस्ते! 🇮🇳' }
 ];
 
 const getRandomGreeting = () => {

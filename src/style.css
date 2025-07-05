@@ -1,103 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css');
 
+*,
+*:before,
+*:after {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+*::-webkit-scrollbar,
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-thumb {
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+    display: none !important;
+    -webkit-appearance: none !important;
+}
+
+html,
 body {
-  font-family: 'Orbitron', sans-serif;
-  background-color: #0d0d0d;
-  color: #f5f5f5;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    font-family: 'Google Sans', sans-serif !important;
+    background-color: #0d0d0d;
+    color: #f5f5f5;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+}
+
+.code-snippet {
+    font-family: 'Courier New', monospace !important;
+    background-color: #2a2a2a;
+    color: #f8f8f8;
+    border: 1px solid #fff;
+}
+
+* {
+    -webkit-overflow-scrolling: touch !important;
+}
+
+/* VIBES ANIME TAMBAHAN */
+
+h1, .navbar h1, .chat-bubble {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
 }
 
 .navbar {
-  background: linear-gradient(to right, #ff66cc, #9966ff);
-  border-bottom: 2px solid #ffffff;
-  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
-}
-
-h1 {
-  letter-spacing: 2px;
+    background: linear-gradient(to right, #ff66cc, #9966ff);
+    border-bottom: 2px solid white;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
 }
 
 .btn {
-  background-color: #ff66cc;
-  border: 1px solid white;
-  color: white;
-  transition: background-color 0.3s ease;
+    background-color: #ff66cc;
+    border: 1px solid white;
+    color: white;
+    transition: background-color 0.3s ease;
 }
 
 .btn:hover {
-  background-color: #ff99dd;
+    background-color: #ff99dd;
 }
 
 .btn-disabled {
-  background-color: #555;
-  color: #ccc;
+    background-color: #555 !important;
+    color: #ccc !important;
 }
 
 .chat-bubble {
-  background-color: #1a1a1a;
-  border: 1px solid #ffffff;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+    background-color: #1a1a1a;
+    border: 1px solid #ffffff;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
 }
 
 .chat-bubble-primary {
-  background-color: #ff66cc;
-  color: #fff;
+    background-color: #ff66cc;
+    color: #fff;
 }
 
 .select {
-  background-color: #1a1a1a;
-  color: #ffffff;
-  border: 1px solid #ffffff;
+    background-color: #1a1a1a;
+    color: #fff;
+    border: 1px solid white;
 }
 
 input {
-  background-color: #1a1a1a;
-  color: #ffffff;
-  border: 1px solid white;
+    background-color: #1a1a1a;
+    color: #fff;
+    border: 1px solid white;
 }
 
 input::placeholder {
-  color: #aaa;
+    color: #aaa;
 }
 
 .loading-dots {
-  color: #ff66cc;
+    color: #ff66cc;
 }
 
 .dropdown-content {
-  background-color: #1a1a1a;
-  border: 1px solid #ffffff;
+    background-color: #1a1a1a;
+    border: 1px solid white;
 }
 
-pre.code-snippet {
-  background-color: #2a2a2a;
-  color: #f8f8f8;
-  border: 1px solid #fff;
-}
-
-.copy-button {
-  background-color: #ff66cc;
-  color: #fff;
-  border: 1px solid white;
-}
-
-.copy-button:hover {
-  background-color: #ff99dd;
+/* panel dashed manga accent */
+.chat-bubble::after {
+    content: "";
+    position: absolute;
+    border: 2px dashed white;
+    border-radius: 8px;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    opacity: 0.2;
+    pointer-events: none;
 }
 
 .avatar img {
-  border: 2px solid #fff;
-}
-
-/* anime panel / manga style accent */
-.chat-bubble::after {
-  content: "";
-  position: absolute;
-  border: 2px dashed white;
-  border-radius: 8px;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
-  opacity: 0.2;
-  pointer-events: none;
+    border: 2px solid #fff;
 }

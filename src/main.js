@@ -7,11 +7,11 @@ document.querySelector('#app').innerHTML = `
         <i class="bi bi-robot hidden sm:block ml-4"></i>
         <h1 class="text-xl font-bold px-4 hidden sm:block">ASSISTEN AI</h1>
         <i class="bi bi-robot sm:hidden ml-5"></i>
-        <div class="flex-1 flex justify-center">
-       <span class="text-xl w-40 sm:w-full max-w-xs">
-          ASSITEN AI
-       </span>
-      </div>
+        <div class="flex-1 flex items-center justify-center">
+        <span class="text-xl text-center w-40 sm:w-full max-w-xs">
+    ASSISTEN AI
+         </span>
+         </div>
         <div class="dropdown dropdown-end">
           <div tabindex="0" role="button" class="btn btn-ghost m-1">
             <i class="fas fa-chevron-down fa-md"></i>

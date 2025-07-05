@@ -59,6 +59,7 @@ document.querySelector('#app').innerHTML = `
 </div>
 `
 const callGroqAPI = async (message, signal) => {
+  const selectedModel = modelSelect.value;
   const apiUrl = 'https://api.groq.com/openai/v1/chat/completions';
 
   try {

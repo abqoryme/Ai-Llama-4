@@ -8,7 +8,7 @@ document.querySelector('#app').innerHTML = `
         <h1 class="text-xl font-bold px-4 hidden sm:block">ASSISTEN AI</h1>
         <i class="bi bi-robot sm:hidden ml-5"></i>
         <div class="flex-1 flex items-center justify-center">
-        <span class="text-xl text-center w-40 sm:w-full max-w-xs">
+        <span class="text-xl text-center">
     ASSISTEN AI
          </span>
          </div>

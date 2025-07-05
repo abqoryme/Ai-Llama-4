@@ -9,7 +9,7 @@ document.querySelector('#app').innerHTML = `
         <i class="bi bi-robot sm:hidden ml-5"></i>
         <div class="flex-1 flex items-center justify-center">
         <span class="text-xl text-center">
-    ASSISTEN AI
+    ASSISTEN AI RYY
          </span>
          </div>
         <div class="dropdown dropdown-end">
@@ -20,19 +20,19 @@ document.querySelector('#app').innerHTML = `
             <li>
               <a href="https://github.com/abqoryme" target="_blank" class="flex items-center gap-2">
                 <i class="fab fa-github"></i>
-                <span class="text-red-400">@Abqoryme</span>
+                <span class="text-blue-400">@Abqoryme</span>
               </a>
             </li>
             <li>
               <a href="https://www.instagram.com/ahmadabkorimudabig" target="_blank" class="flex items-center gap-2">
                 <i class="fab fa-instagram"></i>
-                <span>@Ryy-q</span>
+                <span class="text-blue-400">@Ryy-q</span>
               </a>
             </li>
             <li>
               <a href="https://www.facebook.com/share/1ArMFMJMG3/" target="_blank" class="flex items-center gap-2">
                 <i class="fab fa-facebook"></i>
-                <span>@Its_Me</span>
+                <span class="text-blue-400">@Its_Me</span>
               </a>
             </li>
           </ul>

@@ -5,7 +5,7 @@ document.querySelector('#app').innerHTML = `
   <div class="navbar bg-base-200 rounded-box mb-4">
     <div class="flex-1 flex justify-between items-center">
     <i class="bi bi-robot hidden sm:block ml-4"></i>
-      <h1 class="text-xl font-bold px-4 hidden sm:block">CHAT BOT AI</h1>
+      <h1 class="text-xl font-bold px-4 hidden sm:block">ASSISTEN AI</h1>
         <i class="bi bi-robot sm:hidden ml-5"></i>
       <div class="flex-1 flex justify-center">
        <select id="model-select" class="uppercase select select-bordered w-40 sm:w-full max-w-xs">
@@ -18,21 +18,21 @@ document.querySelector('#app').innerHTML = `
         </div>
         <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
           <li>
-            <a href="https://github.com/RevanSP" target="_blank" class="flex items-center gap-2">
+            <a href="https://github.com/abqoryme" target="_blank" class="flex items-center gap-2">
               <i class="fab fa-github"></i>
-              <span>@RevanSP</span>
+              <span class="text-red-400">@Abqoryme</span>
             </a>
           </li>
           <li>
-            <a href="https://www.instagram.com/m9nokuro" target="_blank" class="flex items-center gap-2">
+            <a href="https://www.instagram.com/ahmadabkorimudabig" target="_blank" class="flex items-center gap-2">
               <i class="fab fa-instagram"></i>
-              <span>@m9nokuro</span>
+              <span>@Ryy-q</span>
             </a>
           </li>
           <li>
-            <a href="https://www.facebook.com/profile.php?id=100082958149027" target="_blank" class="flex items-center gap-2">
+            <a href="https://www.facebook.com/share/1ArMFMJMG3/" target="_blank" class="flex items-center gap-2">
               <i class="fab fa-facebook"></i>
-              <span>@Reiivan</span>
+              <span>@Its_Me</span>
             </a>
           </li>
         </ul>
@@ -41,9 +41,6 @@ document.querySelector('#app').innerHTML = `
   </div>
   <div class="bg-base-200 rounded-box p-4 flex flex-col h-[calc(100vh-7rem)]">
 <div id="chat-messages" class="space-y-4 flex-grow mb-4 pr-0 md:pr-3 pb-6 overflow-y-scroll md:overflow-y-auto"></div>
- <button id="who-is-reiiv-btn" class="btn w-full !rounded-xl bg-base-100 border border-base-300 text-white mb-5 p-4 shadow-lg z-20">
-  REIIV ?
-</button>
   <form id="chat-form" class="flex gap-2">
     <input 
       type="text" 
@@ -62,7 +59,6 @@ document.querySelector('#app').innerHTML = `
 </div>
 `
 const callGroqAPI = async (message, signal) => {
-  const selectedModel = modelSelect.value;
   const apiUrl = 'https://api.groq.com/openai/v1/chat/completions';
 
   try {
@@ -74,9 +70,9 @@ const callGroqAPI = async (message, signal) => {
       },
       body: JSON.stringify({
         messages: [...chatHistory, { role: 'user', content: message }],
-        model: selectedModel,
+        model: "meta-llama/llama-4-scout-17b-16e-instruct",
         temperature: 0.7,
-        max_tokens: 8000,
+        max_tokens: 1024,
       }),
       signal: signal,
     });
@@ -211,7 +207,6 @@ document.addEventListener("DOMContentLoaded", () => {
     whoIsReiivBtn.classList.remove('btn-active');
     whoIsReiivBtn.classList.add('cursor-not-allowed');
 
-    const userMessage = 'REIIV ?';
     disableInputField(true);
 
     addMessage(userMessage, true);

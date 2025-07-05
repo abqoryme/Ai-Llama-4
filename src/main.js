@@ -71,7 +71,7 @@ const callGroqAPI = async (message, signal) => {
       },
       body: JSON.stringify({
         messages: [...chatHistory, { role: 'user', content: message }],
-        model: "meta-llama/llama-4-scout-17b-16e-instruct",
+        model: selectedModel || "meta-llama/llama-4-scout-17b-16e-instruct",
         temperature: 1,
         max_tokens: 1024,
       }),
@@ -137,20 +137,16 @@ let abortController = null;
 const disableInputField = (disable) => {
   const inputField = document.getElementById('user-input');
   const sendButton = document.getElementById('send-button');
-  const whoIsReiivBtn = document.getElementById('who-is-reiiv-btn');
   const modelSelect = document.getElementById('model-select');
 
   inputField.disabled = disable;
   sendButton.disabled = disable;
-  whoIsReiivBtn.disabled = disable;
   modelSelect.disabled = disable;
   stopButton.disabled = !disable;
 
   if (disable) {
     sendButton.classList.remove('btn-active');
     sendButton.classList.add('btn-disabled');
-    whoIsReiivBtn.classList.remove('btn-active');
-    whoIsReiivBtn.classList.add('btn-disabled');
     stopButton.classList.remove('btn-disabled');
     stopButton.classList.add('btn-active');
   } else {
@@ -159,8 +155,6 @@ const disableInputField = (disable) => {
       sendButton.classList.remove('btn-disabled');
       sendButton.classList.add('btn-active');
     }
-    whoIsReiivBtn.classList.remove('btn-disabled');
-    whoIsReiivBtn.classList.add('btn-active');
     stopButton.classList.remove('btn-active');
     stopButton.classList.add('btn-disabled');
   }
@@ -180,8 +174,6 @@ stopButton.addEventListener('click', () => {
 document.addEventListener("DOMContentLoaded", () => {
   const inputField = document.getElementById('user-input');
   const sendButton = document.getElementById('send-button');
-  const whoIsReiivBtn = document.getElementById('who-is-reiiv-btn');
-  let isReiivClicked = false;
 
   const toggleButtonState = () => {
     if (inputField.value.trim() === '') {
@@ -197,81 +189,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   inputField.addEventListener('input', toggleButtonState);
   toggleButtonState();
-
-  whoIsReiivBtn.addEventListener('click', async () => {
-    if (isReiivClicked) return;
-
-    isReiivClicked = true;
-
-    whoIsReiivBtn.disabled = true;
-    whoIsReiivBtn.classList.add('opacity-30', 'pointer-events-none');
-    whoIsReiivBtn.classList.remove('btn-active');
-    whoIsReiivBtn.classList.add('cursor-not-allowed');
-
-    disableInputField(true);
-
-    addMessage(userMessage, true);
-    chatHistory.push({ role: 'user', content: userMessage });
-
-    const whoIsMessage = "REIIV is the creator and master of this chatbot. A passionate full-stack web developer, REIIV has programmed this chatbot to assist users with a wide range of web-related topics. The chatbot is designed to provide effective assistance and solutions for anything related to web development, from front-end to back-end. REIIV, the creator, is always behind the scenes, continuously enhancing the chatbot's capabilities to improve the user experience.";
-
-    const messageDiv = addMessage(whoIsMessage, false);
-    const typingSpeed = 20;
-    const messageLength = whoIsMessage.length;
-    const typingDuration = typingSpeed * messageLength;
-
-    await new Promise(resolve => setTimeout(resolve, typingDuration));
-
-    const br = document.createElement('br');
-    const avatarDiv = document.createElement('div');
-    avatarDiv.className = 'avatar mt-8 mb-5 flex justify-center items-center w-full';
-
-    const avatarRingDiv = document.createElement('div');
-    avatarRingDiv.className = 'ring-primary ring-offset-base-100 w-32 rounded-full ring ring-offset-2 flex justify-center items-center';
-
-    const imgElement = document.createElement('img');
-    imgElement.src = 'Me.jpg';
-    imgElement.alt = 'REIIV';
-    imgElement.className = 'w-full h-full object-cover rounded-full';
-
-    avatarRingDiv.appendChild(imgElement);
-    avatarDiv.appendChild(avatarRingDiv);
-
-    messageDiv.querySelector('.chat-bubble')?.appendChild(br);
-    messageDiv.querySelector('.chat-bubble')?.appendChild(avatarDiv);
-
-    const socialButtonsDiv = document.createElement('div');
-    socialButtonsDiv.className = 'flex justify-center gap-3 mt-5 mb-3';
-
-    const githubBtn = document.createElement('a');
-    githubBtn.href = 'https://github.com/RevanSP';
-    githubBtn.target = '_blank';
-    githubBtn.className = 'btn btn-circle';
-    githubBtn.innerHTML = `<i class="fab fa-github"></i>`;
-    githubBtn.setAttribute('aria-label', 'GitHub');
-
-    const fbBtn = document.createElement('a');
-    fbBtn.href = 'https://web.facebook.com/profile.php?id=100082958149027';
-    fbBtn.target = '_blank';
-    fbBtn.className = 'btn btn-circle';
-    fbBtn.innerHTML = `<i class="fab fa-facebook"></i>`;
-    fbBtn.setAttribute('aria-label', 'Facebook');
-
-    const igBtn = document.createElement('a');
-    igBtn.href = 'https://www.instagram.com/m9nokuro';
-    igBtn.target = '_blank';
-    igBtn.className = 'btn btn-circle';
-    igBtn.innerHTML = `<i class="fab fa-instagram"></i>`;
-    igBtn.setAttribute('aria-label', 'Instagram');
-
-    socialButtonsDiv.appendChild(githubBtn);
-    socialButtonsDiv.appendChild(fbBtn);
-    socialButtonsDiv.appendChild(igBtn);
-
-    messageDiv.querySelector('.chat-bubble')?.appendChild(socialButtonsDiv);
-
-    disableInputField(false);
-  });
 
   fetchModels();
 });

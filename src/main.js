@@ -401,8 +401,7 @@ const addMessage = (content, isUser = false, isFirstMessage = false, isThinking 
   return messageDiv;
 };
 
-addMessage(`How can I help you today ? I am programmed by &nbsp;<div class="badge rounded bg-base-300 inline-flex items-center py-3"> <i class="bi bi-patch-check-fill w-3 text-blue-600"></i>
- &nbsp;&nbsp;<strong>REIIV</strong></div>&nbsp; Currently/default, using model : ${modelSelect.value}`, false, true);
+addMessage(`How can I help you today ?`, false, true);
 
 const fetchModels = async () => {
   try {

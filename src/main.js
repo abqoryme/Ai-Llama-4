@@ -1,65 +1,65 @@
 import './style.css'
 
 document.querySelector('#app').innerHTML = `
- <div class="container mx-auto p-4 max-w-6xl">
-  <div class="navbar bg-base-200 rounded-box mb-4">
-    <div class="flex-1 flex justify-between items-center">
-    <i class="bi bi-robot hidden sm:block ml-4"></i>
-      <h1 class="text-xl font-bold px-4 hidden sm:block">ASSISTEN AI</h1>
+  <div class="container mx-auto p-4 max-w-6xl">
+    <div class="navbar bg-base-200 rounded-box mb-4">
+      <div class="flex-1 flex justify-between items-center">
+        <i class="bi bi-robot hidden sm:block ml-4"></i>
+        <h1 class="text-xl font-bold px-4 hidden sm:block">ASSISTEN AI</h1>
         <i class="bi bi-robot sm:hidden ml-5"></i>
-        <div class="flex-1 flex justify-center">
-       <select id="model-select" class="uppercase select select-bordered w-40 sm:w-full max-w-xs">
-          <option value="">Loading models ...</option>
-        </select>
-      </div>
-      <div class="dropdown dropdown-end">
-        <div tabindex="0" role="button" class="btn btn-ghost m-1">
-          <i class="fas fa-chevron-down fa-md"></i>
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="btn btn-ghost m-1">
+            <i class="fas fa-chevron-down fa-md"></i>
+          </div>
+          <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+            <li>
+              <a href="https://github.com/abqoryme" target="_blank" class="flex items-center gap-2">
+                <i class="fab fa-github"></i>
+                <span class="text-red-400">@Abqoryme</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/ahmadabkorimudabig" target="_blank" class="flex items-center gap-2">
+                <i class="fab fa-instagram"></i>
+                <span>@Ryy-q</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/share/1ArMFMJMG3/" target="_blank" class="flex items-center gap-2">
+                <i class="fab fa-facebook"></i>
+                <span>@Its_Me</span>
+              </a>
+            </li>
+          </ul>
         </div>
-        <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-          <li>
-            <a href="https://github.com/abqoryme" target="_blank" class="flex items-center gap-2">
-              <i class="fab fa-github"></i>
-              <span class="text-red-400">@Abqoryme</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://www.instagram.com/ahmadabkorimudabig" target="_blank" class="flex items-center gap-2">
-              <i class="fab fa-instagram"></i>
-              <span>@Ryy-q</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://www.facebook.com/share/1ArMFMJMG3/" target="_blank" class="flex items-center gap-2">
-              <i class="fab fa-facebook"></i>
-              <span>@Its_Me</span>
-            </a>
-          </li>
-        </ul>
       </div>
     </div>
+    <div class="bg-base-200 rounded-box p-4 flex flex-col h-[calc(100vh-7rem)]">
+      <div id="chat-messages" class="space-y-4 flex-grow mb-4 pr-0 md:pr-3 pb-6 overflow-y-scroll md:overflow-y-auto"></div>
+      <form id="chat-form" class="flex gap-2">
+        <input 
+          type="text" 
+          id="user-input" 
+          class="input input-bordered w-full rounded bg-base-100" 
+          placeholder="Type your message ..." 
+        />
+        <button type="button" class="btn btn-disabled bg-base-100 rounded" id="stop-button" disabled>
+          <i class="fa-solid fa-stop"></i>
+        </button>
+        <button type="submit" class="btn btn-disabled bg-base-100 rounded" id="send-button">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
   </div>
-  <div class="bg-base-200 rounded-box p-4 flex flex-col h-[calc(100vh-7rem)]">
-<div id="chat-messages" class="space-y-4 flex-grow mb-4 pr-0 md:pr-3 pb-6 overflow-y-scroll md:overflow-y-auto"></div>
-  <form id="chat-form" class="flex gap-2">
-    <input 
-      type="text" 
-      id="user-input" 
-      class="input input-bordered w-full rounded bg-base-100" 
-      placeholder="Type your message ..." 
-    />
-      <button type="button" class="btn btn-disabled bg-base-100 rounded" id="stop-button" disabled>
-    <i class="fa-solid fa-stop"></i>
-  </button>
-    <button type="submit" class="btn btn-disabled bg-base-100 rounded" id="send-button">
-      <i class="fas fa-paper-plane"></i>
-    </button>
-  </form>
-</div>
-</div>
-`
+`;
+
+let chatHistory = [];
+let abortController = null;
+const stopButton = document.getElementById('stop-button');
+
 const callGroqAPI = async (message, signal) => {
-  const selectedModel = modelSelect.value;
+  const selectedModel = "meta-llama/llama-4-scout-17b-16e-instruct";
   const apiUrl = 'https://api.groq.com/openai/v1/chat/completions';
 
   try {
@@ -71,7 +71,7 @@ const callGroqAPI = async (message, signal) => {
       },
       body: JSON.stringify({
         messages: [...chatHistory, { role: 'user', content: message }],
-        model: selectedModel || "meta-llama/llama-4-scout-17b-16e-instruct",
+        model: selectedModel,
         temperature: 1,
         max_tokens: 1024,
       }),
@@ -91,57 +91,11 @@ const callGroqAPI = async (message, signal) => {
   }
 };
 
-document.getElementById('chat-form')?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const input = document.getElementById('user-input');
-  const message = input.value.trim();
-  const sendButton = document.querySelector('#chat-form button');
-
-  if (message) {
-    disableInputField(true);
-    addMessage(message, true);
-    chatHistory.push({ role: 'user', content: message });
-    input.value = '';
-
-    sendButton.innerHTML = `<span class="loading loading-dots loading-xs"></span>`;
-    stopButton.innerHTML = `<i class="fa-solid fa-stop"></i>`;
-
-    const loadingMessage = addMessage('Thinking ...', false, false, true);
-
-    abortController = new AbortController();
-
-    try {
-      const response = await callGroqAPI(message, abortController.signal);
-
-      document.getElementById('chat-messages')?.removeChild(loadingMessage);
-      addMessage(response, false);
-
-      chatHistory.push({ role: 'assistant', content: response });
-    } catch (error) {
-      document.getElementById('chat-messages')?.removeChild(loadingMessage);
-    } finally {
-      sendButton.innerHTML = `<i class="fas fa-paper-plane"></i>`;
-      disableInputField(false);
-
-      stopButton.innerHTML = `<i class="fa-solid fa-stop"></i>`;
-    }
-  }
-});
-
-let chatHistory = [];
-
-const stopButton = document.getElementById('stop-button');
-let abortController = null;
-
 const disableInputField = (disable) => {
   const inputField = document.getElementById('user-input');
   const sendButton = document.getElementById('send-button');
-  const modelSelect = document.getElementById('model-select');
-
   inputField.disabled = disable;
   sendButton.disabled = disable;
-  modelSelect.disabled = disable;
   stopButton.disabled = !disable;
 
   if (disable) {
@@ -160,13 +114,47 @@ const disableInputField = (disable) => {
   }
 };
 
+document.getElementById('chat-form')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const input = document.getElementById('user-input');
+  const message = input.value.trim();
+  const sendButton = document.getElementById('send-button');
+
+  if (message) {
+    disableInputField(true);
+    addMessage(message, true);
+    chatHistory.push({ role: 'user', content: message });
+    input.value = '';
+
+    sendButton.innerHTML = `<span class="loading loading-dots loading-xs"></span>`;
+    stopButton.innerHTML = `<i class="fa-solid fa-stop"></i>`;
+
+    const loadingMessage = addMessage('Thinking ...', false, false, true);
+
+    abortController = new AbortController();
+
+    try {
+      const response = await callGroqAPI(message, abortController.signal);
+      document.getElementById('chat-messages')?.removeChild(loadingMessage);
+      addMessage(response, false);
+      chatHistory.push({ role: 'assistant', content: response });
+    } catch (error) {
+      document.getElementById('chat-messages')?.removeChild(loadingMessage);
+    } finally {
+      sendButton.innerHTML = `<i class="fas fa-paper-plane"></i>`;
+      disableInputField(false);
+      stopButton.innerHTML = `<i class="fa-solid fa-stop"></i>`;
+    }
+  }
+});
+
 stopButton.addEventListener('click', () => {
   if (abortController) {
     abortController.abort();
     abortController = null;
     disableInputField(false);
     addMessage("Process stopped by user.", false);
-
     stopButton.innerHTML = `<i class="fa-solid fa-stop"></i>`;
   }
 });
@@ -190,10 +178,8 @@ document.addEventListener("DOMContentLoaded", () => {
   inputField.addEventListener('input', toggleButtonState);
   toggleButtonState();
 
-  fetchModels();
+  addMessage(`How can I help you today ?`, false, true);
 });
-
-const modelSelect = document.getElementById('model-select');
 
 const greetings = [
   { language: 'English', greeting: 'Hello !' },
@@ -234,19 +220,6 @@ const addMessage = (content, isUser = false, isFirstMessage = false, isThinking 
   const chatBubble = messageDiv.querySelector('.chat-bubble');
   const messageTextElement = messageDiv.querySelector('#message-text');
 
-  const isStoppedMessage = content.includes("Process stopped by user");
-  const isReiivMessage = content.includes("REIIV is the creator and master of this chatbot.");
-
-  if (isReiivMessage) {
-    stopButton.disabled = true;
-    stopButton.classList.add('btn-disabled');
-    stopButton.classList.remove('btn-active');
-  } else if (!stopButton.disabled) {
-    stopButton.disabled = false;
-    stopButton.classList.remove('btn-disabled');
-    stopButton.classList.add('btn-active');
-  }
-
   if (isCodeSnippet && !isUser && !isThinking && !isFirstMessage) {
     const codeContainer = document.createElement('pre');
     codeContainer.className = 'code-snippet bg-base-300 p-4 mt-3 mb-3 rounded-md overflow-x-auto text-sm font-mono';
@@ -255,48 +228,42 @@ const addMessage = (content, isUser = false, isFirstMessage = false, isThinking 
     chatBubble.innerHTML = '';
     chatBubble.appendChild(codeContainer);
 
-    if (!isReiivMessage && !isStoppedMessage) {
-      const copyButton = document.createElement('button');
-      copyButton.className = 'mt-2 btn w-full bg-base-300 btn-xs';
-      copyButton.innerText = 'COPY';
-
-      copyButton.addEventListener('click', () => {
-        navigator.clipboard.writeText(content).then(() => {
-          copyButton.innerText = 'COPIED !';
-          setTimeout(() => {
-            copyButton.innerText = 'COPY';
-          }, 3000);
-        }).catch((error) => {
-          console.error('Failed to copy text:', error);
-        });
-      });
-
-      chatBubble.appendChild(copyButton);
-    }
-  } else if (!isUser && !isFirstMessage && !isThinking) {
     const copyButton = document.createElement('button');
     copyButton.className = 'mt-2 btn w-full bg-base-300 btn-xs';
     copyButton.innerText = 'COPY';
 
-    if (!isReiivMessage && !isStoppedMessage) {
-      copyButton.addEventListener('click', () => {
-        navigator.clipboard.writeText(content).then(() => {
-          copyButton.innerText = 'COPIED !';
-          setTimeout(() => {
-            copyButton.innerText = 'COPY';
-          }, 3000);
-        }).catch((error) => {
-          console.error('Failed to copy text:', error);
-        });
+    copyButton.addEventListener('click', () => {
+      navigator.clipboard.writeText(content).then(() => {
+        copyButton.innerText = 'COPIED !';
+        setTimeout(() => {
+          copyButton.innerText = 'COPY';
+        }, 3000);
+      }).catch((error) => {
+        console.error('Failed to copy text:', error);
       });
+    });
 
-      chatBubble.appendChild(copyButton);
-    }
+    chatBubble.appendChild(copyButton);
+  } else if (!isUser && !isFirstMessage && !isThinking) {
+    const copyButton = document.createElement('button');
+    copyButton.className = 'mt-2 btn w-full bg-base-300 btn-xs';
+    copyButton.innerText = 'COPY';
+    copyButton.addEventListener('click', () => {
+      navigator.clipboard.writeText(content).then(() => {
+        copyButton.innerText = 'COPIED !';
+        setTimeout(() => {
+          copyButton.innerText = 'COPY';
+        }, 3000);
+      }).catch((error) => {
+        console.error('Failed to copy text:', error);
+      });
+    });
+    chatBubble.appendChild(copyButton);
   }
 
   if (isFirstMessage) {
     const greeting = getRandomGreeting();
-    messageTextElement.innerHTML = `${greeting} How can I help you today ? I am programmed by &nbsp;<div class="badge rounded bg-base-300 inline-flex items-center py-3"> <i class="bi bi-patch-check-fill w-3 text-blue-600"></i> &nbsp;&nbsp;<strong>REIIV</strong></div>`;
+    messageTextElement.innerHTML = `${greeting} How can I help you today ?`;
   } else {
     const typingDelay = 20;
     let currentCharIndex = 0;
@@ -316,41 +283,4 @@ const addMessage = (content, isUser = false, isFirstMessage = false, isThinking 
   messageDiv.scrollIntoView({ behavior: 'smooth' });
 
   return messageDiv;
-};
-
-addMessage(`How can I help you today ?`, false, true);
-
-const fetchModels = async () => {
-  try {
-    const response = await fetch('https://api.groq.com/openai/v1/models', {
-      headers: {
-        'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const modelSelect = document.getElementById('model-select');
-
-    modelSelect.innerHTML = '';
-
-    data.data.forEach(model => {
-      const option = document.createElement('option');
-      option.value = model.id;
-      option.textContent = model.id;
-      modelSelect.appendChild(option);
-    });
-
-    if (data.data.length > 0) {
-      modelSelect.value = data.data[0].id;
-    }
-  } catch (error) {
-    console.error('Error fetching models:', error);
-    const modelSelect = document.getElementById('model-select');
-    modelSelect.innerHTML = '<option value="">Error loading models</option>';
-  }
 };
